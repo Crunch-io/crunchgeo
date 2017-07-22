@@ -1,0 +1,19 @@
+language: r
+cache: packages
+dist: trusty
+r:
+  - oldrel
+  - release
+  - devel
+addons:
+  apt:
+    packages:
+    - libv8-dev
+    - libgdal1-dev
+    - libgdal-dev
+    - libgeos-c1
+    - libproj-dev
+r_github_packages:
+  - nealrichardson/httptest
+after_success:
+  - Rscript -e 'covr::codecov()'

@@ -1,0 +1,26 @@
+Package: crunchgeo
+Type: Package
+Title: Geospatial data on Crunch
+Description: To facilitate visualizing and interacting with geospatial data on 
+    the Crunch data platform <http://crunch.io/>, the 'crunchgeo' package 
+    provides tools for working with geo- and topo-json files.
+Version: 0.1.0
+Date: 2017-07-21
+Authors@R: person("Jonathan", "Keane", role=c("aut", "cre"), email="jon@crunch.io")
+Author: Jonathan Keane [aut, cre]
+Maintainer: Jonathan Keane <jon@crunch.io>
+URL: https://github.com/jonkeane/crunchgeo
+BugReports: https://github.com/jonkeane/crunchgeo/issues
+License: MIT + file LICENSE
+Depends:
+    R (>= 3.0.0),
+    crunch
+Imports:
+    geojsonio,
+    httpcache,
+    methods
+Suggests:
+    covr,
+    testthat
+RoxygenNote: 6.0.1
+Roxygen: list(markdown = TRUE)
