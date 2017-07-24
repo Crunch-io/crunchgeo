@@ -11,7 +11,7 @@ Author: Jonathan Keane [aut, cre]
 Maintainer: Jonathan Keane <jon@crunch.io>
 URL: https://github.com/jonkeane/crunchgeo
 BugReports: https://github.com/jonkeane/crunchgeo/issues
-License: MIT + file LICENSE
+License: LGPL (>= 3)
 Depends:
     R (>= 3.0.0),
     crunch
