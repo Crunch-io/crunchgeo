@@ -3,32 +3,6 @@
 [![Build Status](https://travis-ci.org/jonkeane/crunchgeo.png?branch=master)](https://travis-ci.org/jonkeane/crunchgeo)  [![codecov](https://codecov.io/gh/jonkeane/crunchgeo/branch/master/graph/badge.svg)](https://codecov.io/gh/jonkeane/crunchgeo)
 [![cran](https://www.r-pkg.org/badges/version-last-release/crunchgeo)](https://cran.r-project.org/package=crunchgeo)
 
-## How to finish setting up your new package
-
-Now that you've got a working package skeleton, there are a few steps to finish setting up all the integrations:
-
-### 1. Git(Hub)
-
-Go to https://github.com/jonkeane and create a new repository. Then, in the directory where this package is, create your git repository from the command line, add the files, and push it to GitHub:
-
-    git init
-    git add --all
-    git commit -m "Initial commit of package skeleton"
-    git remote add origin git@github.com:jonkeane/crunchgeo.git
-    git push -u origin master
-
-### 2. Travis
-
-Now you can go to [Travis](https://travis-ci.org/profile/jonkeane) and turn on continuous integration for your new package. You may need to click the "Sync account" button to get your new package to show up in the list.
-
-If you have a codecov.io account, running your tests on Travis will trigger the code coverage job. No additional configuration is necessary
-
-### 3. Appveyor
-
-Go to [Appveyor's new project page](https://ci.appveyor.com/projects/new) and select your new repository from the list. Then you can go to the [badges](https://ci.appveyor.com/project/jonkeane/crunchgeo/settings/badges) page, copy the markdown code it provides, and paste it up with the other badges above. (Their badge API has a random token in it, so `skeletor` can't include it in the template for you.)
-
-### 4. Delete this "How to finish setting up your new package" section from your README.md
-
 ## Installing
 
 <!-- If you're putting `crunchgeo` on CRAN, it can be installed with
