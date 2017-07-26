@@ -18,4 +18,17 @@ with_mock_crunch({
         test_crGeo$geodatum$location <- "https://notajsonatall.nope"
         expect_error(fetchGeoFile(test_crGeo), "Unknown filetype ", dQuote("nope"), " in geodata url: ", "https://notajsonatall.nope")
     })
+
+    test_that("getGeoDataFrame errors", {
+        expect_error(getGeoDataFrame("foo", "bar"),
+                     "The data object \\(", dQuote("bar"),
+                     "\\) is not a Crunch dataset.")
+        expect_error(getGeoDataFrame("foo", ds),
+                     "The geo_var object \\(", dQuote("foo"),
+                     "\\) is not a variable in the dataset provided.")
+        expect_error(getGeoDataFrame("gender", ds),
+                     "The geo_var \\(", dQuote("gender"), "\\) does not have any",
+                     "geographic metadata associated with it. Please contact ",
+                     "support@crunch.io for help associating geographic metadata.")
+    })
 })
