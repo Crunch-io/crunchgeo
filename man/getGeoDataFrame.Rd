@@ -18,5 +18,22 @@ a SpatialDataFrame with a CrunchDataFrame in the \code{Data} slot instead
 of a standard data.frame
 }
 \description{
-Get a CrunchDataFrame inside of a SpatialDataFrame
+The \code{sp} package has a number of classes of SpatialXDataFrames like SpatialPolygonDataFrame. These include both data.frame content (in their \code{@data} slot) as well as the spatial information (polygons, points, etc.; in their \code{@polygons}, \code{@points}, etc. slots). This function replaces the data.frame that would normally come from the topo- or geo-json with a CrunchDataFrame that includes all of the same information as the original data.frame, but also with information about the CrunchDataSet (similar to using \code{as.data.frame(dataset)}).
+}
+\examples{
+\dontrun{
+library(leaflet)
+ds_geodata <- getGeoDataFrame("state", ds)
+
+# a very simple leaflet choropleth
+pal <- colorNumeric(
+palette = "viridis",
+domain = ds_geodata$turnout)
+
+leaflet(ds_geodata) \%>\%
+    addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
+                opacity = 0.75, fillOpacity = 0.85,
+                fillColor = ~pal(turnout))
+}
+
 }

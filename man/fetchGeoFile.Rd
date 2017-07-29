@@ -4,11 +4,17 @@
 \name{fetchGeoFile}
 \alias{fetchGeoFile}
 \alias{fetchGeoFile,CrunchGeography-method}
+\alias{fetchGeoFile,CrunchVariable-method}
+\alias{fetchGeoFile,ANY-method}
 \title{Fetch a geo- or topo-json hosted by Crunch}
 \usage{
 fetchGeoFile(geography, ...)
 
 \S4method{fetchGeoFile}{CrunchGeography}(geography, ...)
+
+\S4method{fetchGeoFile}{CrunchVariable}(geography, ...)
+
+\S4method{fetchGeoFile}{ANY}(geography, ...)
 }
 \arguments{
 \item{geography}{a \code{CrunchGeography} object, generally obtained by using the \code{geo}

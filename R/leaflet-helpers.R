@@ -10,6 +10,8 @@
 #' @param value the value to be displayed (currently ends with a percent sign)
 #'
 #' @return list of html widgets, one for each title, item, value.
+#'
+#'
 #' @export
 leaflet_hover <- Vectorize(function(title, item, value) {
     # TODO: allow for multiple item, value pairs so that there can be more than

@@ -11,15 +11,23 @@ with_mock_crunch({
             match_field = "none")
         test_crGeo <- new("CrunchGeography", test_crGeo)
         # topojson_read() doesn't result in a get because it reads directly through readOGR in the geojsonio
-        expect_error(fetchGeoFile(geo_data),
-                     'Cannot open data source')
+        expect_GET(fetchGeoFile(geo_data),
+                     'https://s.crunch.io/some/wrong/gb_eer_doesnotexist.topojson')
         expect_GET(fetchGeoFile(test_crGeo),
                    'https://s.crunch.io/some/wrong/path.geojson')
-        test_crGeo$geodatum$location <- "https://notajsonatall.nope"
-        expect_error(fetchGeoFile(test_crGeo), "Unknown filetype ", dQuote("nope"), " in geodata url: ", "https://notajsonatall.nope")
+        test_crGeo$geodatum$format <- "notjson"
+        expect_error(fetchGeoFile(test_crGeo), "Unknown format ", dQuote("notjson"), " in geodata url: ", "https://s.crunch.io/some/wrong/path.geojson")
+    })
+
+    test_that("fetchGeoFile works with other arguments", {
+        expect_error(fetchGeoFile("foo"),
+                     "Cannot fetch a geography on objects other than" ,
+                     " CrunchGeography or CrunchVaraibles.")
     })
 
     test_that("getGeoDataFrame errors", {
+        expect_GET(fetchGeoFile(ds$location),
+                   'https://s.crunch.io/some/wrong/gb_eer_doesnotexist.topojson')
         expect_error(getGeoDataFrame("foo", "bar"),
                      "The data object \\(", dQuote("bar"),
                      "\\) is not a Crunch dataset.")

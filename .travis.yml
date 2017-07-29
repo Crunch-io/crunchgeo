@@ -13,7 +13,5 @@ addons:
     - libgdal-dev
     - libgeos-c1
     - libproj-dev
-r_github_packages:
-  - nealrichardson/httptest
 after_success:
   - Rscript -e 'covr::codecov()'

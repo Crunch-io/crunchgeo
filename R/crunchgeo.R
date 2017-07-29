@@ -1,5 +1,3 @@
-# Here's a good place to put your top-level package documentation
-
 .onAttach <- function (lib, pkgname="crunchgeo") {
     ## Put stuff here you want to run when your package is loaded
     invisible()
@@ -29,19 +27,36 @@ setGeneric("fetchGeoFile", function (geography, ...) standardGeneric("fetchGeoFi
 setMethod("fetchGeoFile", "CrunchGeography", function(geography, ...){
     url <- geography$geodatum$location
     # TODO: move to new topo/geo API descriptor instead of file extension guess
-    fileext <- file_ext(url)
-    if (fileext == "topojson") {
-        geo_data <- topojson_read(url, ...)
-    } else if (fileext %in% c("geojson", "json")) {
+    frmt <- geography$geodatum$format
+    if (frmt == "topojson") {
+        # this *should* use topojson_read, but it will fail if the file
+        # extension isn't topojson, so we set options and just use geojson for now
+        geo_data <- geojson_read(url, method = "local", what = "sp", ...)
+    } else if (frmt %in% c("geojson", "json")) {
             geo_data <- geojson_read(url, ...)
         } else {
-                halt("Unknown filetype ", dQuote(fileext), " in geodata url: ", url)
+            halt("Unknown format ", dQuote(frmt), " in geodata url: ", url)
             }
 
     return(geo_data)
 })
 
+#' @rdname fetchGeoFile
+#' @importFrom crunch geo
+setMethod("fetchGeoFile", "CrunchVariable", function (geography, ...) {
+    fetchGeoFile(geo(geography, ...))
+})
+
+#' @rdname fetchGeoFile
+setMethod("fetchGeoFile", "ANY", function(geography, ...) {
+    halt("Cannot fetch a geography on objects other than CrunchGeography" ,
+         " or CrunchVaraibles.")
+})
+
+
 #' Get a CrunchDataFrame inside of a SpatialDataFrame
+#'
+#' The `sp` package has a number of classes of SpatialXDataFrames like SpatialPolygonDataFrame. These include both data.frame content (in their `@data` slot) as well as the spatial information (polygons, points, etc.; in their `@polygons`, `@points`, etc. slots). This function replaces the data.frame that would normally come from the topo- or geo-json with a CrunchDataFrame that includes all of the same information as the original data.frame, but also with information about the CrunchDataSet (similar to using `as.data.frame(dataset)`).
 #'
 #' @param geo_var the alias of the variable that has geodata associated with it
 #' @param data a Crunch dataset object
@@ -50,19 +65,39 @@ setMethod("fetchGeoFile", "CrunchGeography", function(geography, ...){
 #' @return a SpatialDataFrame with a CrunchDataFrame in the `Data` slot instead
 #' of a standard data.frame
 #'
+#' @examples
+#' \dontrun{
+#' library(leaflet)
+#' ds_geodata <- getGeoDataFrame("state", ds)
+#'
+#' # a very simple leaflet choropleth
+#' pal <- colorNumeric(
+#' palette = "viridis",
+#' domain = ds_geodata$turnout)
+#'
+#' leaflet(ds_geodata) %>%
+#'     addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
+#'                 opacity = 0.75, fillOpacity = 0.85,
+#'                 fillColor = ~pal(turnout))
+#' }
+#'
 #' @export
 getGeoDataFrame <- function(geo_var, data, ...) {
     # todo: accept geo_var as var
     if(!inherits(data, "CrunchDataset")){
-        halt("The data object (", dQuote(substitute(data)), ") is not a Crunch dataset.")
+        halt("The data object (", dQuote(substitute(data)), ") is not a ",
+             "Crunch dataset.")
     }
     if(!geo_var %in% names(data)){
-        halt("The geo_var object (", dQuote(geo_var), ") is not a variable in the dataset provided.")
+        halt("The geo_var object (", dQuote(geo_var), ") is not a variable in",
+             " the dataset provided.")
     }
 
     crunch_geo <- geo(data[[geo_var]])
     if(!inherits(crunch_geo, "CrunchGeography")){
-        halt("The geo_var (", dQuote(geo_var), ") does not have any geographic metadata associated with it. Please contact support@crunch.io for help associating geographic metadata.")
+        halt("The geo_var (", dQuote(geo_var), ") does not have any ",
+             "geographic metadata associated with it. Please contact",
+             " support@crunch.io for help associating geographic metadata.")
     }
 
     geodata <- fetchGeoFile(crunch_geo, ...)

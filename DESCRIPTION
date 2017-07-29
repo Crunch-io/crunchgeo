@@ -15,12 +15,14 @@ License: LGPL (>= 3)
 Depends:
     R (>= 3.0.0),
     crunch
+# TODO: add a minimum version for crunch when geo features are shipped
 Imports:
     geojsonio,
     httpcache,
     methods
 Suggests:
     covr,
+    htmltools,
     leaflet,
     testthat
 RoxygenNote: 6.0.1
