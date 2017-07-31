@@ -5,6 +5,8 @@ r:
   - oldrel
   - release
   - devel
+r_github_packages:
+  - crunch-io/rcrunch@geo
 addons:
   apt:
     packages:
