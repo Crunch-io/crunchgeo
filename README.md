@@ -1,7 +1,8 @@
 # crunchgeo
 
 [![Build Status](https://travis-ci.org/jonkeane/crunchgeo.png?branch=master)](https://travis-ci.org/jonkeane/crunchgeo)  [![codecov](https://codecov.io/gh/jonkeane/crunchgeo/branch/master/graph/badge.svg)](https://codecov.io/gh/jonkeane/crunchgeo)
-[![cran](https://www.r-pkg.org/badges/version-last-release/crunchgeo)](https://cran.r-project.org/package=crunchgeo)
+[![Build status](https://ci.appveyor.com/api/projects/status/njqhbd7ayy1vgp2k/branch/master?svg=true)](https://ci.appveyor.com/project/nealrichardson/crunchgeo/branch/master)
+ [![cran](https://www.r-pkg.org/badges/version-last-release/crunchgeo)](https://cran.r-project.org/package=crunchgeo)
 
 ## Installing
 
