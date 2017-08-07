@@ -23,7 +23,7 @@ leaflet_hover <- Vectorize(function(title, item, value) {
             </br>
             <span style='font-size:14px'>%s %s%%</span>
             </div>",
-            title, item, round(value, 3)
+            title, item, round(value, 1)
         )
     )
 }, vectorize.args = c("title", "item", "value"), SIMPLIFY = FALSE)

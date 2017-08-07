@@ -25,9 +25,11 @@ setGeneric("fetchGeoFile", function (geography, ...) standardGeneric("fetchGeoFi
 #' @rdname fetchGeoFile
 #' @export
 setMethod("fetchGeoFile", "CrunchGeography", function(geography, ...){
-    url <- geography$geodatum$location
+    gd <- Geodata(crGET(geography$geodatum))
+    # check if gotten?
+    url <- gd$location
     # TODO: move to new topo/geo API descriptor instead of file extension guess
-    frmt <- geography$geodatum$format
+    frmt <- gd$format
     if (frmt == "topojson") {
         # this *should* use topojson_read, but it will fail if the file
         # extension isn't topojson, so we set options and just use geojson for now
@@ -103,9 +105,11 @@ getGeoDataFrame <- function(geo_var, data, ...) {
     geodata <- fetchGeoFile(crunch_geo, ...)
 
     crunch_df <- as.data.frame(data)
-    geodata@data <- merge(crunch_df, geodata@data,
+    merged_df <- merge(crunch_df, geodata@data,
                           by.x = geo_var,
                           by.y= gsub("properties.", "", crunch_geo$feature_key),
                           sort = "y")
+    # don't check the class of data because it is a CrunchDataFrame, not a data.frame
+    slot(geodata, "data", check = FALSE) <- merged_df
     return(geodata)
 }

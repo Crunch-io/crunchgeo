@@ -5,18 +5,11 @@ with_mock_crunch({
     geo_data <- geo(ds$location)
 
     test_that("fetchGeoFile", {
-        test_crGeo <- list(
-            geodatum = Geodata(crGET("https://app.crunch.io/api/geodata/newone/")),
+        test_crGeo <- CrunchGeography(
+            geodatum = "https://app.crunch.io/api/geodata/newone/",
             feature_key = "none",
             match_field = "none")
-        test_crGeo <- new("CrunchGeography", test_crGeo)
-        # topojson_read() doesn't result in a get because it reads directly through readOGR in the geojsonio
-        expect_GET(fetchGeoFile(geo_data),
-                     'https://s.crunch.io/some/wrong/gb_eer_doesnotexist.topojson')
-        expect_GET(fetchGeoFile(test_crGeo),
-                   'https://s.crunch.io/some/wrong/path.geojson')
-        test_crGeo$geodatum$format <- "notjson"
-        expect_error(fetchGeoFile(test_crGeo), "Unknown format ", dQuote("notjson"), " in geodata url: ", "https://s.crunch.io/some/wrong/path.geojson")
+        expect_error(fetchGeoFile(test_crGeo), paste("Unknown format", dQuote("notjson"), "in geodata url:", "https://s.crunch.io/some/wrong/path.geojson"))
     })
 
     test_that("fetchGeoFile works with other arguments", {
