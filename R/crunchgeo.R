@@ -21,6 +21,7 @@ setGeneric("fetchGeoFile", function (geography, ...) standardGeneric("fetchGeoFi
 #' @importFrom tools file_ext
 #' @importFrom httpcache halt
 #' @importFrom geojsonio geojson_read topojson_read
+#' @importFrom methods slot slot<-
 #' @import crunch
 #' @rdname fetchGeoFile
 #' @export
