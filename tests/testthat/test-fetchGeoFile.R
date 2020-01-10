@@ -9,7 +9,9 @@ with_mock_crunch({
             geodatum = "https://app.crunch.io/api/geodata/newone/",
             feature_key = "none",
             match_field = "none")
-        expect_error(fetchGeoFile(test_crGeo), paste("Unknown format", dQuote("notjson"), "in geodata url:", "https://s.crunch.io/some/wrong/path.geojson"))
+        expect_error(fetchGeoFile(test_crGeo), 
+                     paste("Unknown format", dQuote("notjson"), "in geodata url:", 
+                           "https://s.crunch.io/some/wrong/path.geojson"))
     })
 
     test_that("fetchGeoFile works with other arguments", {
@@ -19,7 +21,8 @@ with_mock_crunch({
     })
 
     test_that("getGeoDataFrame errors", {
-        expect_GET(fetchGeoFile(ds$location),
+        # Can't use `expect_GET` because `topojson_read()` doesn't use httr
+        expect_error(suppressWarnings(fetchGeoFile(ds$location)),
                    'https://s.crunch.io/some/wrong/gb_eer_doesnotexist.topojson')
         expect_error(getGeoDataFrame("foo", "bar"), paste0(
             "The data object \\(", dQuote("bar"), "\\) is not a Crunch dataset."))

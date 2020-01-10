@@ -29,17 +29,20 @@ setMethod("fetchGeoFile", "CrunchGeography", function(geography, ...){
     gd <- Geodata(crGET(geography$geodatum))
     # check if gotten?
     url <- gd$location
-    # TODO: move to new topo/geo API descriptor instead of file extension guess
     frmt <- gd$format
+    ext <- file_ext(url)
+    if (frmt != "notjson" && !identical(frmt, ext)) {
+        halt("CrunchGeograpy's format (", dQuote(frmt), ") must match ",
+             "file extension of url (", dQuote(url), ")")
+    }
+    
     if (frmt == "topojson") {
-        # this *should* use topojson_read, but it will fail if the file
-        # extension isn't topojson, so we set options and just use geojson for now
-        geo_data <- geojson_read(url, method = "local", what = "sp", ...)
+        geo_data <- as(topojson_read(url, ...), "Spatial")
     } else if (frmt %in% c("geojson", "json")) {
-            geo_data <- geojson_read(url, ...)
-        } else {
-            halt("Unknown format ", dQuote(frmt), " in geodata url: ", url)
-            }
+        geo_data <- geojson_read(url, what = "sp", ...)
+    } else {
+        halt("Unknown format ", dQuote(frmt), " in geodata url: ", url)
+    }
 
     return(geo_data)
 })
