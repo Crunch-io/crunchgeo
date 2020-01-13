@@ -15,5 +15,6 @@ addons:
     - libgdal-dev
     - libgeos-c1
     - libproj-dev
+    - libspatialite-dev
 after_success:
   - Rscript -e 'covr::codecov()'
