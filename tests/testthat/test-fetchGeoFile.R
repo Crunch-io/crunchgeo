@@ -21,8 +21,7 @@ with_mock_crunch({
     })
 
     test_that("getGeoDataFrame errors", {
-        # Can't use `expect_GET` because `topojson_read()` doesn't use httr
-        expect_error(suppressWarnings(fetchGeoFile(ds$location)),
+        expect_GET(suppressWarnings(fetchGeoFile(ds$location)),
                    'https://s.crunch.io/some/wrong/gb_eer_doesnotexist.topojson')
         expect_error(getGeoDataFrame("foo", "bar"), paste0(
             "The data object \\(", dQuote("bar"), "\\) is not a Crunch dataset."))

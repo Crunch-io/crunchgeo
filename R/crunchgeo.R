@@ -22,6 +22,7 @@ setGeneric("fetchGeoFile", function (geography, ...) standardGeneric("fetchGeoFi
 #' @importFrom httpcache halt
 #' @importFrom geojsonio geojson_read topojson_read
 #' @importFrom methods slot slot<-
+#' @importFrom httr write_disk
 #' @import crunch
 #' @rdname fetchGeoFile
 #' @export
@@ -30,16 +31,17 @@ setMethod("fetchGeoFile", "CrunchGeography", function(geography, ...){
     # check if gotten?
     url <- gd$location
     frmt <- gd$format
-    ext <- file_ext(url)
-    if (frmt != "notjson" && !identical(frmt, ext)) {
-        halt("CrunchGeograpy's format (", dQuote(frmt), ") must match ",
-             "file extension of url (", dQuote(url), ")")
-    }
+    
+    # Download file to tempfile because default geojsonio behavior
+    # doesn't use our networking stack
+    tmp <- tempfile(fileext = frmt)
     
     if (frmt == "topojson") {
-        geo_data <- as(topojson_read(url, ...), "Spatial")
+        crGET(url, write_disk(tmp))
+        geo_data <- as(topojson_read(tmp, ...), "Spatial")
     } else if (frmt %in% c("geojson", "json")) {
-        geo_data <- geojson_read(url, what = "sp", ...)
+        crGET(url, write_disk(tmp))
+        geo_data <- geojson_read(tmp, what = "sp", ...)
     } else {
         halt("Unknown format ", dQuote(frmt), " in geodata url: ", url)
     }
