@@ -1,19 +1,27 @@
 language: r
 cache: packages
-dist: trusty
+dist: xenial
 r:
   - oldrel
   - release
   - devel
-r_github_packages:
-  - crunch-io/rcrunch@geo
 addons:
   apt:
+    sources:
+      - sourceline: 'ppa:cran/jq'
+      - sourceline: 'ppa:ubuntugis/ppa'
     packages:
+    - libudunits2-dev
     - libv8-dev
-    - libgdal1-dev
-    - libgdal-dev
-    - libgeos-c1
+    - libprotobuf-dev
+    - libprotoc-dev
     - libproj-dev
+    - libgeos-dev
+    - libgdal-dev
+    - protobuf-compiler
+    - valgrind
+    - libpq-dev
+    - libjq-dev
+    - netcdf-bin
 after_success:
   - Rscript -e 'covr::codecov()'
